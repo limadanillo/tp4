@@ -8,9 +8,7 @@ int main(int argc,char *argv[])
 	InicializaGrafo(&lista);
 	LeEntrada(&lista);
 	ImprimirEntradas(&lista);
-	//ConstroiMatrizDeAdjacencia(lista.primeiro->proximo);
-	//LiberaGrafo(&lista);
-	//Consegui modificar
+	LiberaGrafo(&lista);
 	printf("FIM\n");
 	return 0;
 }

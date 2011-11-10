@@ -2,7 +2,7 @@
 #define GRAFO_H_
 
 //Aresta dos vértices da posição 0 a posição 1, com o peso da aresta na posição 2
-typedef int Aresta[3];
+//typedef int Aresta[3];
 
 typedef struct Grafo *Apontador;
 
@@ -59,13 +59,17 @@ void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices);
 void InsereAresta(int **matriz, int origem, int destino, int peso);
 
 
-
 /*
- * Libera memória alocada para os grafos
+ * Libera memória alocada para os grafos. Possui um parâmetro do tipo ListaGrafo
  */
 void LiberaGrafo(ListaGrafo *lista);
 
-
+/*
+ * Libera memória alocada para as matrizes de adjacencia. Possui dois parâmetros, o primeiro,
+ * um ponteiro de ponteiro (tipo inteiro) que será a matriz. O segundo parâmetro, o tamanho do lado
+ * da matriz de adjacencia (lembrando que ela é uma matriz quadrada).
+ */
+int **LiberaMatrizDeAdjacencia(int **matriz, int tamanho);
 
 void ImprimirEntradas(ListaGrafo *lista);
 void ImprimirMatriz(int **v, int tamanho);
