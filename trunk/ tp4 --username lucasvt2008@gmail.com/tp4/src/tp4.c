@@ -10,7 +10,7 @@ int main(int argc,char *argv[])
 	ImprimirEntradas(&lista);
 	//ConstroiMatrizDeAdjacencia(lista.primeiro->proximo);
 	//LiberaGrafo(&lista);
-	//teste
+	//Consegui modificar
 	printf("FIM\n");
 	return 0;
 }
