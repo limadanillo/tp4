@@ -1,0 +1,73 @@
+#ifndef GRAFO_H_
+#define GRAFO_H_
+
+//Aresta dos vértices da posição 0 a posição 1, com o peso da aresta na posição 2
+typedef int Aresta[3];
+
+typedef struct Grafo *Apontador;
+
+/*
+ * Estrutura de um grafo, contendo:
+ * - Número de arestas
+ * - Número de vértices
+ * - Array do tipo Aresta
+ */
+typedef struct Grafo {
+	int numVertices;
+	int numArestas;
+	int **matrizAdjacencia;
+	Apontador proximo;
+}Grafo;
+
+//Lista de grafos - Múltiplas entradas
+typedef struct ListaGrafo {
+	Apontador primeiro, ultimo;
+}ListaGrafo;
+
+/*
+ * Procedimento que inicializa o grafo
+ * Possui um parâmetro, do tipo ponteiro para a esturutra ListaGrafo
+ */
+void InicializaGrafo(ListaGrafo *lista);
+
+/*
+ * Procedimento para captar da entrada padrão o(s) grafo(s) com seus respectivos
+ * vértices, arestas e peso. Possui um parâmetro, do tipo ListaGrafo
+ */
+void LeEntrada(ListaGrafo *lista);
+
+/*
+ * Função que retorna uma matriz de adjacencia, preenchidas em todas posições aij
+ * com o valor 0. Recebe como parâmetro um tamanho, já que esta matriz é quadrada.
+ * Este tamanho nada mais é do que o número de vértices.
+ */
+int **CriaMatrizDeAdjacencia(int tamanho);
+/*
+ * Procedimento para inserir uma estrutura do tipo grafo
+ * na lista passada no primeiro parâmetro. O segundo e o terceiro
+ * parâmetro são as quantidade de arestas e vértices respectivamente
+ */
+void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices);
+
+/*
+ * Procedimento que Insere uma aresta com seus respectivos vértices, com um determinado peso
+ * Parâmetro 1: matriz (matriz de adjacência que deve ser previamente criada)
+ * Parâmetro 2: vértive origem
+ * Parâmetro 3: vértive destino
+ * Parâmetro 4: peso da aresta
+ */
+void InsereAresta(int **matriz, int origem, int destino, int peso);
+
+
+
+/*
+ * Libera memória alocada para os grafos
+ */
+void LiberaGrafo(ListaGrafo *lista);
+
+
+
+void ImprimirEntradas(ListaGrafo *lista);
+void ImprimirMatriz(int **v, int tamanho);
+
+#endif /* GRAFO_H_ */

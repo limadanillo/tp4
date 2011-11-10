@@ -1,17 +1,15 @@
-/*
- ============================================================================
- Name        : tp4.c
- Author      : 
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
-
 #include <stdio.h>
 #include <stdlib.h>
+#include "grafo.h"
 
-int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
-	return EXIT_SUCCESS;
+int main(int argc,char *argv[])
+{
+	ListaGrafo lista;
+	InicializaGrafo(&lista);
+	LeEntrada(&lista);
+	ImprimirEntradas(&lista);
+	//ConstroiMatrizDeAdjacencia(lista.primeiro->proximo);
+	//LiberaGrafo(&lista);
+	printf("FIM\n");
+	return 0;
 }
