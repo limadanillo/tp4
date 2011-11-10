@@ -56,9 +56,29 @@ int **CriaMatrizDeAdjacencia(int tamanho)
 	int i, j;
 	matriz = (int **)malloc(tamanho * sizeof(int *)); //Aloca as linhas da matriz
 
+	/*
+	 * Tratamento de erro. Verifica se as linhas da matriz são alocadas corretamente e/ou
+	 * existe memória suficiente
+	 */
+	if(matriz == NULL)
+	{
+		printf("Matriz (linha) nao alocada. Verifique memoria\n");
+		exit(1);
+	}
+
 	for(i=0; i<tamanho; i++)
 	{
 		matriz[i] = (int *)malloc(tamanho * sizeof(int)); //Aloca as colunas da matriz
+		/*
+		 * Tratamento de erro. Verifica se as colunas da matriz são alocadas corretamente e/ou
+		 * existe memória suficiente
+		 */
+		if(matriz[i] == NULL)
+		{
+			printf("Matriz (coluna) nao alocada. Verifique memoria\n");
+			exit(1);
+		}
+
 	}
 
 	for(i=0; i<tamanho; i++)
@@ -104,8 +124,22 @@ void LiberaGrafo(ListaGrafo *lista)
 	{
 		apaga = aux;
 		aux = aux->proximo;
+		apaga->matrizAdjacencia = LiberaMatrizDeAdjacencia(apaga->matrizAdjacencia, apaga->numVertices);
 		free(apaga);
 	}
+}
+
+int **LiberaMatrizDeAdjacencia(int **matriz, int tamanho)
+{
+	  int  i;
+	  if(matriz == NULL) return (NULL);
+
+	  for(i=0; i<tamanho; i++)
+	  {
+		  free(matriz[i]);
+	  }
+	  free (matriz);
+	  return (NULL);
 }
 
 void ImprimirEntradas(ListaGrafo *lista)
