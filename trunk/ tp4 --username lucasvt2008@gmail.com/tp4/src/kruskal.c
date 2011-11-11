@@ -26,15 +26,16 @@ int U[N];
 
 
 /* function definitions */
-void kruskal(int **matriz, int tamanho)
-{  int W[N][N] = {0,2,4,1,3,2,    /* weighted graph */
-                  2,0,6,4,5,1,
-                  4,6,0,4,2,1,
-                  1,4,4,0,5,4,
-                  3,5,2,5,0,6,
-                  2,1,1,4,6,0};
-   int E[M][3];                   /* complete set of edges */
-   int F[N-1][3];                 /* set of edges in min. span. tree */
+void kruskal(int **matriz, int numVertices, int numArestas)
+{
+//{  int W[N][N] = {0,2,4,1,3,2,    /* weighted graph */
+//                  2,0,6,4,5,1,
+//                  4,6,0,4,2,1,
+//                  1,4,4,0,5,4,
+//                  3,5,2,5,0,6,
+//                  2,1,1,4,6,0};
+   int E[numArestas][3];                   /* complete set of edges */
+   int F[numVertices-1][3];                 /* set of edges in min. span. tree */
    int num_edges = 0;             /* num of edges in min. span. tree */
    int next_edge = 0;             /* next edge not yet considered */
    int weight = 0;                /* minimal spanning tree weight */
@@ -42,12 +43,12 @@ void kruskal(int **matriz, int tamanho)
 
 /* initialize set of edges */
    k = 0;
-   for (i = 0; i < N; i++)
-      for (j = 0; j < N; j++)
+   for (i = 0; i < numVertices; i++)
+      for (j = 0; j < numVertices; j++)
          if (j > i)
          {  E[k][0] = i;          /* first vertex of edge */
             E[k][1] = j;          /* second vertex of edge */
-            E[k][2] = W[i][j];    /* weight of edge */
+            E[k][2] = matriz[i][j];    /* weight of edge */
             k++;
          }
 
@@ -62,7 +63,7 @@ void kruskal(int **matriz, int tamanho)
 
 /* sort set of edges in non-decreasing order by weight - bubblesort */
 
-   for (i = M - 1; i > 0; i--)
+   for (i=numArestas - 1; i > 0; i--)
       for (j = 0; j < i; j++)
          if (E[j][2] > E[j+1][2])
          {  a = E[j][0];
@@ -77,24 +78,24 @@ void kruskal(int **matriz, int tamanho)
          }
 
 /* display set of edges - after sort */
-   for (i = 0; i < M; i++)
+   for (i = 0; i < numArestas; i++)
    {  for (j = 0; j < 3; j++)
          printf(" %3d", E[i][j]);
       printf("\n");
    }
 
 /* create n disjoint subsets */
-   initial (N);
+   initial (numVertices);
 
 /* initialize set of edges in min. span. tree to empty */
-   for (i = 0; i < N - 1; i++)
+   for (i = 0; i < numVertices - 1; i++)
       for (j = 0; j < 3; j++)
          F[i][j] = -1;            /* '-1' denotes 'empty' */
 
    //test_univ();
 
 /* find minimal spanning tree */
-   while (num_edges < N - 1)
+   while (num_edges < numVertices - 1)
    {  a = E[next_edge][0];
       b = E[next_edge][1];
 
@@ -117,16 +118,16 @@ void kruskal(int **matriz, int tamanho)
 /* display edges comprising minimal spanning tree */
    printf("\nMinimal Spanning Tree Edges:\n");
    printf("F = (");
-   for (i = 0; i < N - 1; i++)
+   for (i = 0; i < numVertices - 1; i++)
    {  printf("(V%d,V%d)", F[i][0], F[i][1]);
-      if (i < N - 2)
+      if (i < numVertices - 2)
          printf(", ");
       weight = weight + F[i][2];
    }
    printf(")\n");
    printf("Minimal Spanning Tree Weight = %d\n", weight);
 
-   return (0);
+
 }
 
 /*************** makeset() ***************/
