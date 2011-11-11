@@ -8,7 +8,7 @@
 #ifndef KRUSKAL_H_
 #define KRUSKAL_H_
 
-void kruskal(int **matriz, int tamanho);
+void kruskal(int **matriz,int numVertices, int numArestas);
 void initial (int n);
 int equal (int p, int q);
 void merge (int p, int q);
