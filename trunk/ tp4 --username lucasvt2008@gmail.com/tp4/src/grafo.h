@@ -58,6 +58,15 @@ void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices);
  */
 void InsereAresta(int **matriz, int origem, int destino, int peso);
 
+/*
+ * Gera saída do programa que serão as árvores geradoras mínimas de
+ * acordo com o algoritmo de Prim ou Kruscal.
+ * Recebe no primeiro parâmetro uma lista encadeada do tipo ListaGrafo
+ * que conterá as entradas (grafos). No segundo parametro, um número inteiro (1 ou 2)
+ * que representa o algoritmo escolhido de acordo com a linha de comando: 1 - Prim
+ * 2 - Kruscal
+ */
+void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo);
 
 /*
  * Libera memória alocada para os grafos. Possui um parâmetro do tipo ListaGrafo
@@ -70,6 +79,8 @@ void LiberaGrafo(ListaGrafo *lista);
  * da matriz de adjacencia (lembrando que ela é uma matriz quadrada).
  */
 int **LiberaMatrizDeAdjacencia(int **matriz, int tamanho);
+
+
 
 void ImprimirEntradas(ListaGrafo *lista);
 void ImprimirMatriz(int **v, int tamanho);

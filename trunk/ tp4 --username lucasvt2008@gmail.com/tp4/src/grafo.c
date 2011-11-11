@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "grafo.h"
+#include "kruskal.h"
 
 void InicializaGrafo(ListaGrafo *lista)
 {
@@ -112,6 +113,21 @@ void InsereAresta(int **matriz, int origem, int destino, int peso)
 	 */
 	matriz[origem][destino] = peso;
 	matriz[destino][origem] = peso;
+}
+
+void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo)
+{
+	Apontador aux = lista->primeiro->proximo;
+	int cont = 1;
+
+	while(aux != NULL)
+	{
+		printf("Teste %d\n", cont);
+		kruskal(aux->matrizAdjacencia, aux->numVertices);
+		//ImprimirMatriz(aux->matrizAdjacencia, aux->numVertices);
+		aux = aux->proximo;
+		cont++;
+	}
 }
 
 
