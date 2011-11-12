@@ -1,21 +1,44 @@
-/*
- * kruskal.h
- *
- *  Created on: 10/11/2011
- *      Author: lucas
- */
-
 #ifndef KRUSKAL_H_
 #define KRUSKAL_H_
 
-void kruskal(int **matriz,int numVertices, int numArestas);
-void initial (int n);
-int equal (int p, int q);
-void merge (int p, int q);
-int find (int i);
-void makeset (int i);
+/*
+ * Procedimento que procura uma árvore geradora mínima segundo Kruskal.
+ * Parâmetro 1 = Matriz de adjacência representando o grafo
+ * Parâmetro 2 = Número de vértices do grafo
+ * Parâmetro 3 = Número de arestas do grafo
+ * Imprime na saída padrao a árvore geradora mínima do grafo passado no primeiro parâmetro
+ */
+void Kruskal(int **matriz,int numVertices, int numArestas);
 
+/*
+ * Procedimento que cria um vetor com os vértices do grafo.
+ * Parâmetro 1 = Vetor para alocar os vértices
+ * Parâmetro 2 = Número de vértices
+ */
+void CriaSubConjunto(int U[], int n);
 
+/*
+ * Função que analisa se dois números inteiros são iguais.
+ * Retorna 1 se são iguais, retorna 0 caso contrário.
+ * Recebe dois parâmetros, que são os dois números inteiros para comparação
+ */
+int Igual(int p, int q);
+
+/*
+ * Função procura no vetor passado no primeiro parâmetro a posição do vértice i.
+ * Retorna a posição do vértice.
+ * Parâmetro 1 = Vetor vértices
+ * Parâmetro 2 = Vértice
+ */
+int ProcuraPosicaoVertice (int U[], int i);
+
+/*
+ * Reordena ordem do vetor de vértice
+ * Parâmetro 1 = Vetor vértices
+ * Parâmetro 2 = Vértice x
+ * Parâmetro 3 = Vértice y
+ */
+void Reordena(int U[], int p, int q);
 
 
 

@@ -123,7 +123,7 @@ void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo)
 	while(aux != NULL)
 	{
 		printf("Teste %d\n", cont);
-		kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
+		Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
 		//ImprimirMatriz(aux->matrizAdjacencia, aux->numVertices);
 		aux = aux->proximo;
 		cont++;
