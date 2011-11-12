@@ -1,29 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kruskal.h"
+//#define COL_GRAFO 3
 
 /*
 Este programa é uma implementação do algoritmo de Kruskal para
-determinar uma árvore geradora mínima para um ligado, não-dirigida,
-grafo ponderado. Esta aplicação é projetado especificamente
-para os dados de teste requeridos pelo projeto. A melhor solução
-seria a de implementar o algoritmo para gerar espaço para qualquer
-problema de forma dinâmica.
+determinar uma árvore geradora mínima para um grafo conectado, não direcionado e
+grafo ponderado. Esta aplicação é projetada especificamente
+para os dados de teste requeridos pelo projeto.
 */
 
-
-/* function definitions */
 void Kruskal(int **matriz, int numVertices, int numArestas)
 {
 	int U[numVertices];
-	int E[numArestas][3];                   /* complete set of edges */
-	int F[numVertices-1][3];                 /* set of edges in min. span. tree */
-	int aux_NumVertices = 0;             /* num of edges in min. span. tree */
-	int proximo_vetice = 0;             /* next edge not yet considered */
-	int weight = 0;                /* minimal spanning tree weight */
-	int a, b, c, i, j, k;          /* counter/placeholder variables */
+	int ConjuntoArestas[numArestas][3]; // Conjunto de arestas
+	int ArvoreMinima[numVertices-1][3];  // Conjunto de arestas da árvore geradora mínima
+	int aux_NumArestas = 0; // Búmero de arestas da árvore geradora mínima
+	int proximo_vetice = 0; // Próxim aresta ainda não considerado
+	//int peso = 0; // Caminho total árvore geradora mínima
+	int a, b, c, i, j, k; // Variáveis contado0ras
 
-	/* Inicializa conjunto de vértices */
+	/* Inicializa conjunto de arestas */
 	k = 0;
 	for (i = 0; i < numVertices; i++)
 	{
@@ -31,9 +28,9 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
 		{
 			if (j > i)
 			{
-				E[k][0] = i;          /* first vertex of edge */
-				E[k][1] = j;          /* second vertex of edge */
-				E[k][2] = matriz[i][j];    /* weight of edge */
+				ConjuntoArestas[k][0] = i;          /* first vertex of edge */
+				ConjuntoArestas[k][1] = j;          /* second vertex of edge */
+				ConjuntoArestas[k][2] = matriz[i][j];    /* peso of edge */
 				k++;
 			}
 		}
@@ -43,17 +40,17 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
 	{
 		for (j = 0; j < i; j++)
 		{
-			if (E[j][2] > E[j+1][2])
+			if (ConjuntoArestas[j][2] > ConjuntoArestas[j+1][2])
 			{
-				a = E[j][0];
-				b = E[j][1];
-				c = E[j][2];
-				E[j][0] = E[j+1][0];
-				E[j][1] = E[j+1][1];
-				E[j][2] = E[j+1][2];
-				E[j+1][0] = a;
-				E[j+1][1] = b;
-				E[j+1][2] = c;
+				a = ConjuntoArestas[j][0];
+				b = ConjuntoArestas[j][1];
+				c = ConjuntoArestas[j][2];
+				ConjuntoArestas[j][0] = ConjuntoArestas[j+1][0];
+				ConjuntoArestas[j][1] = ConjuntoArestas[j+1][1];
+				ConjuntoArestas[j][2] = ConjuntoArestas[j+1][2];
+				ConjuntoArestas[j+1][0] = a;
+				ConjuntoArestas[j+1][1] = b;
+				ConjuntoArestas[j+1][2] = c;
 			}
 		}
 	}
@@ -67,15 +64,15 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
    {
 	   for (j = 0; j < 3; j++)
 	   {
-		   F[i][j] = -1;            /* '-1' == Vazio */
+		   ArvoreMinima[i][j] = -1;            /* '-1' == Vazio */
 	   }
    }
 
    /* find minimal spanning tree */
-   while (aux_NumVertices < numVertices - 1)
+   while (aux_NumArestas < numVertices - 1)
    {
-	   a = E[proximo_vetice][0];
-	   b = E[proximo_vetice][1];
+	   a = ConjuntoArestas[proximo_vetice][0];
+	   b = ConjuntoArestas[proximo_vetice][1];
 
 	   i = ProcuraPosicaoVertice(U, a);
 	   j = ProcuraPosicaoVertice(U, b);
@@ -83,25 +80,25 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
 	   if (!Igual(i, j))
 	   {
 		   Reordena(U, i, j);
-		   F[aux_NumVertices][0] = E[proximo_vetice][0];
-		   F[aux_NumVertices][1] = E[proximo_vetice][1];
-		   F[aux_NumVertices][2] = E[proximo_vetice][2];
-		   aux_NumVertices++;
+		   ArvoreMinima[aux_NumArestas][0] = ConjuntoArestas[proximo_vetice][0];
+		   ArvoreMinima[aux_NumArestas][1] = ConjuntoArestas[proximo_vetice][1];
+		   ArvoreMinima[aux_NumArestas][2] = ConjuntoArestas[proximo_vetice][2];
+		   aux_NumArestas++;
 	   }
 	   proximo_vetice++;
 	}
 
-/*
- * Imprime a árvore geradora mínima
- */
-for (i=0; i<numVertices - 1; i++)
-	{
-		printf("%d %d %d", F[i][0], F[i][1], F[i][2]);
-		if (i < numVertices - 2) printf("\n");
-		weight = weight + F[i][2];
-	}
-	printf("\n\n");
-
+   /*
+    * Imprime a árvore geradora mínima
+    */
+//   for (i=0; i<numVertices - 1; i++)
+//   {
+//		printf("%d %d %d", ArvoreMinima[i][0], ArvoreMinima[i][1], ArvoreMinima[i][2]);
+//		if (i < numVertices - 2) printf("\n");
+//		//peso = peso + ArvoreMinima[i][2]; //tamanho do caminho percorrido
+//	}
+//	printf("\n\n");
+   ImprimeArvoreGeradoraMinima(ArvoreMinima, numVertices);
 }
 
 int ProcuraPosicaoVertice(int U[], int i)
@@ -127,4 +124,16 @@ void CriaSubConjunto(int U[], int n)
 {
 	int i;
 	for (i = 0; i < n; i++) U[i] = i;
+}
+
+void ImprimeArvoreGeradoraMinima(int ArvoreMinima[][COL_GRAFO], int numVertices)
+{
+	int i;
+	for (i=0; i<numVertices - 1; i++)
+	{
+		printf("%d %d %d", ArvoreMinima[i][0], ArvoreMinima[i][1], ArvoreMinima[i][2]);
+		if (i < numVertices - 2) printf("\n");
+		//peso = peso + ArvoreMinima[i][2]; //tamanho do caminho percorrido
+	}
+	printf("\n\n");
 }
