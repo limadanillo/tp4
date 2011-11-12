@@ -1,5 +1,6 @@
 #ifndef KRUSKAL_H_
 #define KRUSKAL_H_
+#define COL_GRAFO 3
 
 /*
  * Procedimento que procura uma árvore geradora mínima segundo Kruskal.
@@ -41,8 +42,7 @@ int ProcuraPosicaoVertice (int U[], int i);
 void Reordena(int U[], int p, int q);
 
 
-
-
+void ImprimeArvoreGeradoraMinima(int ArvoreMinima[][COL_GRAFO], int numVertices);
 
 
 
