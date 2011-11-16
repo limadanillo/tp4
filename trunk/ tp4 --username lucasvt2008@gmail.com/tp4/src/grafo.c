@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "grafo.h"
 #include "kruskal.h"
+#include "prim.h"
 
 void InicializaGrafo(ListaGrafo *lista)
 {
@@ -119,11 +120,13 @@ void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo)
 {
 	Apontador aux = lista->primeiro->proximo;
 	int cont = 1;
+	int raiz = 0;
 
 	while(aux != NULL)
 	{
 		printf("Teste %d\n", cont);
-		Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
+		//Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
+		Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, &raiz);
 		//ImprimirMatriz(aux->matrizAdjacencia, aux->numVertices);
 		aux = aux->proximo;
 		cont++;
