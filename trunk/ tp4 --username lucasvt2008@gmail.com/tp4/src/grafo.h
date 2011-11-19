@@ -59,6 +59,14 @@ void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices);
 void InsereAresta(int **matriz, int origem, int destino, int peso);
 
 /*
+ * Função que pesquisa em uma matriz de adjacência, o maior peso de aresta existente.
+ * Retorna um inteiro contendo o maior peso.
+ * Parâmetro 1: matriz (matriz de adjacência que deve ser previamente criada)
+ * Parâmetro 2: Número de vértice
+ */
+int MaiorPesoDeAresta(int **matriz, int numVertice);
+
+/*
  * Gera saída do programa que serão as árvores geradoras mínimas de
  * acordo com o algoritmo de Prim ou Kruscal.
  * Recebe no primeiro parâmetro uma lista encadeada do tipo ListaGrafo
