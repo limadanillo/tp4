@@ -5,58 +5,59 @@
 
 
 /*-- Operadores para obter a lista de adjacentes --*/
-int ListaAdjVazia(int *Vertice, int **matriz, int numVertice)
+int ListaAdjacenciaVazia(int *vertice, int **matriz, int numVertice)
 {
 	int Aux = 0;
 	short ListaVazia = VERDADEIRO;
 	while (Aux < numVertice && ListaVazia)
     {
-		if (matriz[*Vertice][Aux] > 0) ListaVazia = FALSO;
+		if (matriz[*vertice][Aux] > 0) ListaVazia = FALSO;
 		else Aux++;
     }
   return (ListaVazia == VERDADEIRO);
 }
 
-int PrimeiroListaAdj(int *Vertice, int **matriz, int numVertice)
+int PrimeiroListaAdjacente(int *vertice, int **matriz, int numVertice)
 {
-	int Result;
-	int Aux = 0;
+	int result;
+	int aux = 0;
 	short Listavazia = VERDADEIRO;
-	while (Aux < numVertice && Listavazia)
+	while (aux < numVertice && Listavazia)
     {
-		if (matriz[*Vertice][Aux] > 0)
-		{ 	Result = Aux;
+		if (matriz[*vertice][aux] > 0)
+		{
+			result = aux;
         	Listavazia = FALSO;
 		}
-		else Aux++;
+		else aux++;
     }
-	if (Aux == numVertice)	printf("Erro: Lista adjacencia vazia (PrimeiroListaAdj)\n");
-	return Result;
+	if (aux == numVertice)	printf("Erro: Lista adjacencia vazia\n");
+	return result;
 }
 
 
-void ProxAdj(int *Vertice, int **matriz, int numVertice, int *Adj, int *Peso, int *Prox, int *FimListaAdj)
+void ProxAdjacente(int *vertice, int **matriz, int numVertice, int *adjacente, int *peso, int *proximoAdjacente, int *FimListaAdj)
 {
 	/* --Retorna Adj apontado por Prox--*/
-	*Adj = *Prox;
-	*Peso = matriz[*Vertice][*Prox];
-	(*Prox)++;
-	while (*Prox < numVertice && matriz[*Vertice][*Prox] == 0) (*Prox)++;
-	if (*Prox == numVertice) *FimListaAdj = VERDADEIRO;
+	*adjacente = *proximoAdjacente;
+	*peso = matriz[*vertice][*proximoAdjacente];
+	(*proximoAdjacente)++;
+	while (*proximoAdjacente < numVertice && matriz[*vertice][*proximoAdjacente] == 0) (*proximoAdjacente)++;
+	if (*proximoAdjacente == numVertice) *FimListaAdj = VERDADEIRO;
 }
 
 
 /* Local variables for AgmPrim: */
 
-void RefazInd(int Esq, int Dir, int *heap, int pesoAresta[], int *posicaoVerticeHeap)
+void RefazIndice(int esquerda, int direita, int heap[], int pesoAresta[], int *posicaoVerticeHeap)
 {
-	int i = Esq;
+	int i = esquerda;
 	int j = i * 2;
 	int x;
 	x = heap[i];
-	while (j <= Dir)
+	while (j <= direita)
 	{
-		if (j < Dir)
+		if (j < direita)
 		{
 			if (pesoAresta[heap[j]] > pesoAresta[heap[j+1]]) j++;
 		}
@@ -70,18 +71,18 @@ void RefazInd(int Esq, int Dir, int *heap, int pesoAresta[], int *posicaoVertice
 	posicaoVerticeHeap[x] = i;
 }
 
-void Constroi(int *heap, int pesoAresta[], int *posicaoVerticeHeap, int *tamanhoDoHeap)
+void Constroi(int heap[], int pesoAresta[], int posicaoVerticeHeap[], int *tamanhoDoHeap)
 {
 	int Esq;
 	Esq = (*tamanhoDoHeap) / (2+1);
 	while (Esq > 1)
 	{
 		Esq--;
-		RefazInd(Esq, *tamanhoDoHeap, heap, pesoAresta, posicaoVerticeHeap);
+		RefazIndice(Esq, *tamanhoDoHeap, heap, pesoAresta, posicaoVerticeHeap);
 	}
 }
 
-int RetiraMinInd(int heap[], int pesoAresta[], int *posicaoVerticeHeap, int *tamanhoDoHeap)
+int RetiraIndiceMinimo(int heap[], int pesoAresta[], int posicaoVerticeHeap[], int *tamanhoDoHeap)
 {
 	int resultado = 0;
 	if (*tamanhoDoHeap < 1)
@@ -93,27 +94,27 @@ int RetiraMinInd(int heap[], int pesoAresta[], int *posicaoVerticeHeap, int *tam
 	heap[1] = heap[*tamanhoDoHeap];
 	posicaoVerticeHeap[heap[*tamanhoDoHeap]] = 1;
 	(*tamanhoDoHeap) = (*tamanhoDoHeap) - 1 ;
-	RefazInd(1, *tamanhoDoHeap, heap, pesoAresta, posicaoVerticeHeap );
+	RefazIndice(1, *tamanhoDoHeap, heap, pesoAresta, posicaoVerticeHeap );
 	return resultado;
 }
 
-void DiminuiChaveInd(int i, int chaveNova, int heap[], int pesoAresta[], int *posicaoVerticeHeap)
+void DiminuiChaveIndice(int indice, int chaveNova, int heap[], int pesoAresta[], int posicaoVerticeHeap[])
 {
 	int x;
-	if (chaveNova > pesoAresta[heap[i]])
+	if (chaveNova > pesoAresta[heap[indice]])
 	{
 		printf("Erro: ChaveNova maior que a chave atual\n");
 		return;
 	}
-	pesoAresta[heap[i]] = chaveNova;
-	while (i > 1 && pesoAresta[heap[i / 2]] > pesoAresta[heap[i]])
+	pesoAresta[heap[indice]] = chaveNova;
+	while (indice > 1 && pesoAresta[heap[indice / 2]] > pesoAresta[heap[indice]])
     {
-		x = heap[i / 2];
-		heap[i / 2] = heap[i];
-		posicaoVerticeHeap[heap[i]] = i / 2;
-		heap[i] = x;
-		posicaoVerticeHeap[x] = i;
-		i /= 2;
+		x = heap[indice / 2];
+		heap[indice / 2] = heap[indice];
+		posicaoVerticeHeap[heap[indice]] = indice / 2;
+		heap[indice] = x;
+		posicaoVerticeHeap[x] = indice;
+		indice /= 2;
     }
 }
 
@@ -146,7 +147,7 @@ void Prim(int **matriz, int numVertice, int numAresta)
 	Constroi(heap, pesoAresta, posicaoVerticeHeap, &tamanhoDoHeap);
 	while (tamanhoDoHeap >= 1)  /*enquanto heap nao vazio*/
 	{
-		guarda = RetiraMinInd(heap, pesoAresta, posicaoVerticeHeap, &tamanhoDoHeap);
+		guarda = RetiraIndiceMinimo(heap, pesoAresta, posicaoVerticeHeap, &tamanhoDoHeap);
 		u = guarda;
 		arrayBooleano[u] = FALSO;
 		if (u != verticeInicial)
@@ -154,17 +155,17 @@ void Prim(int **matriz, int numVertice, int numAresta)
 			printf("%d %d %d\n", verticeAntecessor[u], u, matriz[verticeAntecessor[u]][u]);
 		}
 
-		if (!ListaAdjVazia(&u, matriz, numVertice)) //
+		if (!ListaAdjacenciaVazia(&u, matriz, numVertice))
 		{
-			proximoVertice = PrimeiroListaAdj(&u, matriz, numVertice); //
+			proximoVertice = PrimeiroListaAdjacente(&u, matriz, numVertice);
 			finalListaAdj = FALSO;
 			while (!finalListaAdj)
 			{
-				ProxAdj(&u, matriz, numVertice, &v, &peso, &proximoVertice, &finalListaAdj); //
+				ProxAdjacente(&u, matriz, numVertice, &v, &peso, &proximoVertice, &finalListaAdj);
 				if (arrayBooleano[v] && peso < pesoAresta[v])
 				{
 					verticeAntecessor[v] = u;
-					DiminuiChaveInd(posicaoVerticeHeap[v], peso, heap, pesoAresta, posicaoVerticeHeap);
+					DiminuiChaveIndice(posicaoVerticeHeap[v], peso, heap, pesoAresta, posicaoVerticeHeap);
 				}
 			}
 		}
