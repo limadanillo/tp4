@@ -48,124 +48,123 @@ void ProxAdj(int *Vertice, int **matriz, int numVertice, int *Adj, int *Peso, in
 
 /* Local variables for AgmPrim: */
 
-void RefazInd(int Esq, int Dir, int *A, int P[], int *Pos)
+void RefazInd(int Esq, int Dir, int *heap, int pesoAresta[], int *posicaoVerticeHeap)
 {
 	int i = Esq;
 	int j = i * 2;
 	int x;
-	x = A[i];
+	x = heap[i];
 	while (j <= Dir)
 	{
 		if (j < Dir)
 		{
-			if (P[A[j]] > P[A[j+1]]) j++;
+			if (pesoAresta[heap[j]] > pesoAresta[heap[j+1]]) j++;
 		}
-		if (P[x] <= P[A[j]]) break;
-		A[i] = A[j];
-		Pos[A[j]] = i;
+		if (pesoAresta[x] <= pesoAresta[heap[j]]) break;
+		heap[i] = heap[j];
+		posicaoVerticeHeap[heap[j]] = i;
 		i = j;
 		j = i * 2;
 	}
-	A[i] = x;
-	Pos[x] = i;
+	heap[i] = x;
+	posicaoVerticeHeap[x] = i;
 }
 
-void Constroi(int *A, int P[], int *Pos, int *tamanhoDoHeap)
+void Constroi(int *heap, int pesoAresta[], int *posicaoVerticeHeap, int *tamanhoDoHeap)
 {
 	int Esq;
 	Esq = (*tamanhoDoHeap) / (2+1);
 	while (Esq > 1)
 	{
 		Esq--;
-		RefazInd(Esq, *tamanhoDoHeap, A, P, Pos);
+		RefazInd(Esq, *tamanhoDoHeap, heap, pesoAresta, posicaoVerticeHeap);
 	}
 }
 
-int RetiraMinInd(int A[], int P[], int *Pos, int *tamanhoDoHeap)
+int RetiraMinInd(int heap[], int pesoAresta[], int *posicaoVerticeHeap, int *tamanhoDoHeap)
 {
-	int Result = 0;
+	int resultado = 0;
 	if (*tamanhoDoHeap < 1)
 	{
 		printf("Erro: heap vazio\n");
-		return Result;
+		return resultado;
 	}
-	Result = A[1];
-	A[1] = A[*tamanhoDoHeap];
-	Pos[A[*tamanhoDoHeap]] = 1;
+	resultado = heap[1];
+	heap[1] = heap[*tamanhoDoHeap];
+	posicaoVerticeHeap[heap[*tamanhoDoHeap]] = 1;
 	(*tamanhoDoHeap) = (*tamanhoDoHeap) - 1 ;
-	RefazInd(1, *tamanhoDoHeap, A, P, Pos );
-	return Result;
+	RefazInd(1, *tamanhoDoHeap, heap, pesoAresta, posicaoVerticeHeap );
+	return resultado;
 }
 
-void DiminuiChaveInd(int i, int ChaveNova, int A[], int P[], int *Pos)
+void DiminuiChaveInd(int i, int chaveNova, int heap[], int pesoAresta[], int *posicaoVerticeHeap)
 {
 	int x;
-	if (ChaveNova > P[A[i]])
+	if (chaveNova > pesoAresta[heap[i]])
 	{
 		printf("Erro: ChaveNova maior que a chave atual\n");
 		return;
 	}
-	P[A[i]] = ChaveNova;
-	while (i > 1 && P[A[i / 2]] > P[A[i]])
+	pesoAresta[heap[i]] = chaveNova;
+	while (i > 1 && pesoAresta[heap[i / 2]] > pesoAresta[heap[i]])
     {
-		x = A[i / 2];
-		A[i / 2] = A[i];
-		Pos[A[i]] = i / 2;
-		A[i] = x;
-		Pos[x] = i;
+		x = heap[i / 2];
+		heap[i / 2] = heap[i];
+		posicaoVerticeHeap[heap[i]] = i / 2;
+		heap[i] = x;
+		posicaoVerticeHeap[x] = i;
 		i /= 2;
     }
 }
 
 void Prim(int **matriz, int numVertice, int numAresta)
 {
-	int tamanho = MaiorPesoDeAresta(matriz, numVertice);
-	int Antecessor[numVertice + 1];
-	short Itensheap[numVertice + 1];
-	int A[numVertice];
+	int verticeAntecessor[numVertice + 1];
+	short arrayBooleano[numVertice + 1]; //Simula um vetor de booleanos com 0=falso e 1=verdadeiro
+	int heap[numVertice];
 	int tamanhoDoHeap;
-	int Aux;
-	int FimListaAdj;
-	int Peso;
+	int proximoVertice;
+	int finalListaAdj;
+	int peso;
 	int verticeInicial = 0;
-	int P[numVertice + 1];
-	int Pos[numVertice + 1];
-	int u, v;
-	int TEMP;
+	int pesoAresta[numVertice + 1];
+	int posicaoVerticeHeap[numVertice + 1];
+	int u, v; //Vértices que compõe uma aresta qualquer
+	int guarda;
 
 	for (u = 0; u <= numVertice; u++)
 	{
 		/*Constroi o heap com todos os valores igual a INFINITO*/
-		Antecessor[u] = -1;
-		P[u] = tamanho+1;
-		A[u+1] = u;   /*Heap a ser construido*/
-		Itensheap[u] = VERDADEIRO;
-		Pos[u] = u + 1;
+		verticeAntecessor[u] = -1;
+		pesoAresta[u] = MaiorPesoDeAresta(matriz, numVertice) +1;
+		heap[u+1] = u;   /*Heap a ser construido*/
+		arrayBooleano[u] = VERDADEIRO;
+		posicaoVerticeHeap[u] = u + 1;
 	}
 	tamanhoDoHeap = numVertice;
-	P[verticeInicial] = 0;
-	Constroi(A, P, Pos, &tamanhoDoHeap);
+	pesoAresta[verticeInicial] = 0;
+	Constroi(heap, pesoAresta, posicaoVerticeHeap, &tamanhoDoHeap);
 	while (tamanhoDoHeap >= 1)  /*enquanto heap nao vazio*/
 	{
-		TEMP = RetiraMinInd(A, P, Pos, &tamanhoDoHeap);
-		u = TEMP;
-		Itensheap[u] = FALSO;
+		guarda = RetiraMinInd(heap, pesoAresta, posicaoVerticeHeap, &tamanhoDoHeap);
+		u = guarda;
+		arrayBooleano[u] = FALSO;
 		if (u != verticeInicial)
 		{
-			printf("%d %d %d\n", Antecessor[u], u, matriz[Antecessor[u]][u]);
+			printf("%d %d %d\n", verticeAntecessor[u], u, matriz[verticeAntecessor[u]][u]);
 		}
 
 		if (!ListaAdjVazia(&u, matriz, numVertice)) //
 		{
-			Aux = PrimeiroListaAdj(&u, matriz, numVertice); //
-			FimListaAdj = FALSO;
-			while (!FimListaAdj)
+			proximoVertice = PrimeiroListaAdj(&u, matriz, numVertice); //
+			finalListaAdj = FALSO;
+			while (!finalListaAdj)
 			{
-				ProxAdj(&u, matriz, numVertice, &v, &Peso, &Aux, &FimListaAdj); //
-				if (Itensheap[v] && Peso < P[v])
+				ProxAdj(&u, matriz, numVertice, &v, &peso, &proximoVertice, &finalListaAdj); //
+				if (arrayBooleano[v] && peso < pesoAresta[v])
 				{
-					Antecessor[v] = u;
-					DiminuiChaveInd(Pos[v], Peso, A, P, Pos);
+					verticeAntecessor[v] = u;
+					DiminuiChaveInd(posicaoVerticeHeap[v], peso, heap, pesoAresta, posicaoVerticeHeap);
 				}
 			}
 		}
