@@ -12,10 +12,10 @@
 
 
 void Prim(int **matriz, int numVertice, int numAresta);
-void DiminuiChaveInd(int i, int ChaveNova, int A[], int P[], int *Pos);
-int RetiraMinInd(int A[], int P[], int *Pos, int *tamanhoDoHeap);
-void Constroi(int A[], int P[], int *Pos, int *tamanhoDoHeap);
-void RefazInd(int Esq, int Dir, int *A, int P[], int *Pos);
+void DiminuiChaveInd(int i, int chaveNova, int heap[], int pesoAresta[], int *posicaoVerticeHeap);
+int RetiraMinInd(int heap[], int pesoAresta[], int *posicaoVerticeHeap, int *tamanhoDoHeap);
+void Constroi(int *heap, int pesoAresta[], int *posicaoVerticeHeap, int *tamanhoDoHeap);
+void RefazInd(int Esq, int Dir, int *heap, int pesoAresta[], int *posicaoVerticeHeap);
 int ListaAdjVazia(int *Vertice, int **matriz, int numVertice);
 int PrimeiroListaAdj(int *Vertice, int **matriz, int numVertice);
 void ProxAdj(int *Vertice, int **matriz, int numVertice, int *Adj, int *Peso, int *Prox, int *FimListaAdj);
