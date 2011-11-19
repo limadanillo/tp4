@@ -116,17 +116,36 @@ void InsereAresta(int **matriz, int origem, int destino, int peso)
 	matriz[destino][origem] = peso;
 }
 
+int MaiorPesoDeAresta(int **matriz, int numVertice)
+{
+	int tamanho = 0; //Inicializando com um valor sem peso
+	int i, j;
+
+	/*
+	 * Matriz de adjacência sempre será quadrada, e seu lado terá o tamanho de
+	 * (unidades) do número de vértices.
+	 */
+	for(i=0; i<numVertice; i++)
+	{
+		for(j=0; j<numVertice; j++)
+		{
+			if(tamanho < matriz[i][j]) tamanho = matriz[i][j];
+		}
+	}
+
+	return tamanho;
+}
+
 void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo)
 {
 	Apontador aux = lista->primeiro->proximo;
 	int cont = 1;
-	int raiz = 0;
 
 	while(aux != NULL)
 	{
 		printf("Teste %d\n", cont);
 		//Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
-		Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, &raiz);
+		Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
 		//ImprimirMatriz(aux->matrizAdjacencia, aux->numVertices);
 		aux = aux->proximo;
 		cont++;

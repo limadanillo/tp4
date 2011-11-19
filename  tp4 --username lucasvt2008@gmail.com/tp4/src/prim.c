@@ -1,52 +1,32 @@
-/*-- 24/mai/2003 --*/
 #include <stdlib.h>
 #include <stdio.h>
-#include <limits.h>
+#include "grafo.h"
 #include "prim.h"
-void FGVazio(TipoGrafo *Grafo)
-{
-	int  i, j;
-	for (i = 0; i <= Grafo->NumVertices; i++)
-    {
-		for (j = 0; j <= Grafo->NumVertices; j++)
-			Grafo->Mat[i][j] = 0;
-    }
-}
-
-//void InsereAresta(TipoValorVertice *V1, TipoValorVertice *V2, TipoPeso *Peso, TipoGrafo *Grafo)
-//{
-//	Grafo->Mat[*V1][*V2] = *Peso;
-//}
-
-short  ExisteAresta(TipoValorVertice Vertice1, TipoValorVertice Vertice2, TipoGrafo *Grafo)
-{
-	return (Grafo->Mat[Vertice1][Vertice2] > 0);
-}
 
 
 /*-- Operadores para obter a lista de adjacentes --*/
-short  ListaAdjVazia(TipoValorVertice *Vertice, int **matriz, int numVertice, TipoGrafo *Grafo)
+int ListaAdjVazia(int *Vertice, int **matriz, int numVertice)
 {
-	TipoApontador Aux = 0;
-	short ListaVazia = TRUE;
+	int Aux = 0;
+	short ListaVazia = VERDADEIRO;
 	while (Aux < numVertice && ListaVazia)
     {
-		if (matriz[*Vertice][Aux] > 0) ListaVazia = FALSE;
+		if (matriz[*Vertice][Aux] > 0) ListaVazia = FALSO;
 		else Aux++;
     }
-  return (ListaVazia == TRUE);
+  return (ListaVazia == VERDADEIRO);
 }
 
-TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, int **matriz, int numVertice, TipoGrafo *Grafo)
+int PrimeiroListaAdj(int *Vertice, int **matriz, int numVertice)
 {
-	TipoValorVertice Result;
-	TipoApontador Aux = 0;
-	short Listavazia = TRUE;
+	int Result;
+	int Aux = 0;
+	short Listavazia = VERDADEIRO;
 	while (Aux < numVertice && Listavazia)
     {
 		if (matriz[*Vertice][Aux] > 0)
 		{ 	Result = Aux;
-        	Listavazia = FALSE;
+        	Listavazia = FALSO;
 		}
 		else Aux++;
     }
@@ -55,119 +35,133 @@ TipoApontador PrimeiroListaAdj(TipoValorVertice *Vertice, int **matriz, int numV
 }
 
 
-void ProxAdj(TipoValorVertice *Vertice, int **matriz, int numVertice, TipoGrafo *Grafo, TipoValorVertice *Adj, TipoPeso *Peso, TipoApontador *Prox, short *FimListaAdj)
+void ProxAdj(int *Vertice, int **matriz, int numVertice, int *Adj, int *Peso, int *Prox, int *FimListaAdj)
 {
 	/* --Retorna Adj apontado por Prox--*/
 	*Adj = *Prox;
 	*Peso = matriz[*Vertice][*Prox];
 	(*Prox)++;
 	while (*Prox < numVertice && matriz[*Vertice][*Prox] == 0) (*Prox)++;
-	if (*Prox == numVertice) *FimListaAdj = TRUE;
+	if (*Prox == numVertice) *FimListaAdj = VERDADEIRO;
 }
 
-void ImprimeGrafo(TipoGrafo *Grafo, int **matriz, int numVertice)
-{
-//	int i, j;
-//
-//	printf("   ");
-//
-//	for (i = 0; i < Grafo->NumVertices; i++) printf(" %3d", i);
-//  putchar('\n');
-//  for (i = 0; i < Grafo->NumVertices; i++)
-//    { printf("%3d", i);
-//      for (j = 0; j < Grafo->NumVertices; j++)
-//        printf("%4d", Grafo->Mat[i][j]);
-//      putchar('\n');
-//    }
-}
 
 /* Local variables for AgmPrim: */
 
-void RefazInd(TipoIndice Esq, TipoIndice Dir, TipoItem *A, TipoPeso *P, TipoValorVertice *Pos)
+void RefazInd(int Esq, int Dir, int *A, int P[], int *Pos)
 {
-	TipoIndice i = Esq;
-  int j = i * 2;
-  TipoItem x;
-  x = A[i];
-  while (j <= Dir)
-  { if (j < Dir)
-    { if (P[A[j].Chave] > P[A[j+1].Chave]) j++; }
-    if (P[x.Chave] <= P[A[j].Chave]) goto L999;
-    A[i] = A[j]; Pos[A[j].Chave] = i;
-    i = j; j = i * 2;
-  }
-  L999: A[i] = x;
-  Pos[x.Chave] = i;
+	int i = Esq;
+	int j = i * 2;
+	int x;
+	x = A[i];
+	while (j <= Dir)
+	{
+		if (j < Dir)
+		{
+			if (P[A[j]] > P[A[j+1]]) j++;
+		}
+		if (P[x] <= P[A[j]]) break;
+		A[i] = A[j];
+		Pos[A[j]] = i;
+		i = j;
+		j = i * 2;
+	}
+	A[i] = x;
+	Pos[x] = i;
 }
 
-void Constroi(TipoItem *A, TipoPeso *P, TipoValorVertice *Pos)
-{ TipoIndice Esq;
-  Esq = n / 2 + 1;
-  while (Esq > 1) { Esq--; RefazInd(Esq, n, A, P, Pos); }
+void Constroi(int *A, int P[], int *Pos, int *tamanhoDoHeap)
+{
+	int Esq;
+	Esq = (*tamanhoDoHeap) / (2+1);
+	while (Esq > 1)
+	{
+		Esq--;
+		RefazInd(Esq, *tamanhoDoHeap, A, P, Pos);
+	}
 }
 
-TipoItem RetiraMinInd(TipoItem *A, TipoPeso *P, TipoValorVertice *Pos)
-{ TipoItem Result;
-  if (n < 1) { printf("Erro: heap vazio\n"); return Result; }
-  Result = A[1]; A[1] = A[n];
-  Pos[A[n].Chave] = 1; n--;
-  RefazInd(1, n, A, P, Pos );
-  return Result;
+int RetiraMinInd(int A[], int P[], int *Pos, int *tamanhoDoHeap)
+{
+	int Result = 0;
+	if (*tamanhoDoHeap < 1)
+	{
+		printf("Erro: heap vazio\n");
+		return Result;
+	}
+	Result = A[1];
+	A[1] = A[*tamanhoDoHeap];
+	Pos[A[*tamanhoDoHeap]] = 1;
+	(*tamanhoDoHeap) = (*tamanhoDoHeap) - 1 ;
+	RefazInd(1, *tamanhoDoHeap, A, P, Pos );
+	return Result;
 }
 
-void DiminuiChaveInd(TipoIndice i, TipoPeso ChaveNova, TipoItem *A,
-                     TipoPeso *P, TipoValorVertice *Pos)
-{ TipoItem x;
-  if (ChaveNova > P[A[i].Chave])
-  { printf("Erro: ChaveNova maior que a chave atual\n");
-    return;
-  }
-  P[A[i].Chave] = ChaveNova;
-  while (i > 1 && P[A[i / 2].Chave] > P[A[i].Chave])
-    { x = A[i / 2]; A[i / 2] = A[i];
-      Pos[A[i].Chave] = i / 2; A[i] = x;
-      Pos[x.Chave] = i; i /= 2;
+void DiminuiChaveInd(int i, int ChaveNova, int A[], int P[], int *Pos)
+{
+	int x;
+	if (ChaveNova > P[A[i]])
+	{
+		printf("Erro: ChaveNova maior que a chave atual\n");
+		return;
+	}
+	P[A[i]] = ChaveNova;
+	while (i > 1 && P[A[i / 2]] > P[A[i]])
+    {
+		x = A[i / 2];
+		A[i / 2] = A[i];
+		Pos[A[i]] = i / 2;
+		A[i] = x;
+		Pos[x] = i;
+		i /= 2;
     }
 }
 
-void Prim(int **matriz, int numVertice, int numAresta, int *Raiz)
+void Prim(int **matriz, int numVertice, int numAresta)
 {
-	int Antecessor[MAXNUMVERTICES + 1];
-	short Itensheap[MAXNUMVERTICES + 1];
-	Vetor A;
-	TipoPeso P[MAXNUMVERTICES + 1];
-	TipoValorVertice Pos[MAXNUMVERTICES + 1];
-	TipoValorVertice u, v;
-	TipoItem TEMP;
-	TipoGrafo Grafo;
+	int tamanho = MaiorPesoDeAresta(matriz, numVertice);
+	int Antecessor[numVertice + 1];
+	short Itensheap[numVertice + 1];
+	int A[numVertice];
+	int tamanhoDoHeap;
+	int Aux;
+	int FimListaAdj;
+	int Peso;
+	int verticeInicial = 0;
+	int P[numVertice + 1];
+	int Pos[numVertice + 1];
+	int u, v;
+	int TEMP;
+
 	for (u = 0; u <= numVertice; u++)
 	{
 		/*Constroi o heap com todos os valores igual a INFINITO*/
 		Antecessor[u] = -1;
-		P[u] = INFINITO;
-		A[u+1].Chave = u;   /*Heap a ser construido*/
-		Itensheap[u] = TRUE;
+		P[u] = tamanho+1;
+		A[u+1] = u;   /*Heap a ser construido*/
+		Itensheap[u] = VERDADEIRO;
 		Pos[u] = u + 1;
 	}
-	n = numVertice;
-	P[*Raiz] = 0;
-	Constroi(A, P, Pos);
-	while (n >= 1)  /*enquanto heap nao vazio*/
+	tamanhoDoHeap = numVertice;
+	P[verticeInicial] = 0;
+	Constroi(A, P, Pos, &tamanhoDoHeap);
+	while (tamanhoDoHeap >= 1)  /*enquanto heap nao vazio*/
 	{
-		TEMP = RetiraMinInd(A, P, Pos);
-		u = TEMP.Chave; Itensheap[u] = FALSE;
-		if (u != *Raiz)
+		TEMP = RetiraMinInd(A, P, Pos, &tamanhoDoHeap);
+		u = TEMP;
+		Itensheap[u] = FALSO;
+		if (u != verticeInicial)
 		{
 			printf("%d %d %d\n", Antecessor[u], u, matriz[Antecessor[u]][u]);
 		}
 
-		if (!ListaAdjVazia(&u, matriz, numVertice, &Grafo)) //
+		if (!ListaAdjVazia(&u, matriz, numVertice)) //
 		{
-			Aux = PrimeiroListaAdj(&u, matriz, numVertice, &Grafo); //
-			FimListaAdj = FALSE;
+			Aux = PrimeiroListaAdj(&u, matriz, numVertice); //
+			FimListaAdj = FALSO;
 			while (!FimListaAdj)
 			{
-				ProxAdj(&u, matriz, numVertice, &Grafo, &v, &Peso, &Aux, &FimListaAdj); //
+				ProxAdj(&u, matriz, numVertice, &v, &Peso, &Aux, &FimListaAdj); //
 				if (Itensheap[v] && Peso < P[v])
 				{
 					Antecessor[v] = u;

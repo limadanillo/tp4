@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kruskal.h"
-//#define COL_GRAFO 3
 
 /*
 Este programa é uma implementação do algoritmo de Kruskal para
