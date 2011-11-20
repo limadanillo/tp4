@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kruskal.h"
+#include "pilha.h"
 
 /*
 Este programa é uma implementação do algoritmo de Kruskal para
@@ -11,6 +12,12 @@ para os dados de teste requeridos pelo projeto.
 
 void Kruskal(int **matriz, int numVertices, int numArestas)
 {
+	FILE *arq = fopen("DistribuiEspaPrim.txt", "w");
+	if(arq == NULL)
+	{
+		printf("Erro na abertura do arquvio DistribuiEspaPrim.txt\n");
+		exit(1);
+	}
 	int U[numVertices];
 	int ConjuntoArestas[numArestas][3]; // Conjunto de arestas
 	int ArvoreMinima[numVertices-1][3];  // Conjunto de arestas da árvore geradora mínima
@@ -86,18 +93,7 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
 	   }
 	   proximo_vetice++;
 	}
-
-   /*
-    * Imprime a árvore geradora mínima
-    */
-//   for (i=0; i<numVertices - 1; i++)
-//   {
-//		printf("%d %d %d", ArvoreMinima[i][0], ArvoreMinima[i][1], ArvoreMinima[i][2]);
-//		if (i < numVertices - 2) printf("\n");
-//		//peso = peso + ArvoreMinima[i][2]; //tamanho do caminho percorrido
-//	}
-//	printf("\n\n");
-   ImprimeArvoreGeradoraMinima(ArvoreMinima, numVertices);
+   	ImprimeArvoreGeradoraMinima(ArvoreMinima, numVertices);
 }
 
 int ProcuraPosicaoVertice(int U[], int i)

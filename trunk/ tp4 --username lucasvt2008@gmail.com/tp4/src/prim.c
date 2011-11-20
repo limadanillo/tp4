@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "grafo.h"
 #include "prim.h"
+#include "pilha.h"
 
 
 /*-- Operadores para obter a lista de adjacentes --*/
@@ -120,6 +121,12 @@ void DiminuiChaveIndice(int indice, int chaveNova, int heap[], int pesoAresta[],
 
 void Prim(int **matriz, int numVertice, int numAresta)
 {
+	FILE *arq = fopen("DistribuiEspaPrim.txt", "w");
+	if(arq == NULL)
+	{
+		printf("Erro na abertura do arquvio DistribuiEspaPrim.txt\n");
+		exit(1);
+	}
 	int verticeAntecessor[numVertice + 1];
 	short arrayBooleano[numVertice + 1]; //Simula um vetor de booleanos com 0=falso e 1=verdadeiro
 	int heap[numVertice];
