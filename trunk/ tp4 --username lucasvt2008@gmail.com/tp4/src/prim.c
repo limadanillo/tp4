@@ -119,14 +119,17 @@ void DiminuiChaveIndice(int indice, int chaveNova, int heap[], int pesoAresta[],
     }
 }
 
-void Prim(int **matriz, int numVertice, int numAresta)
+void Prim(int **matriz, int numVertice, int numAresta, int teste)
 {
-	FILE *arq = fopen("DistribuiEspaPrim.txt", "w");
-	if(arq == NULL)
-	{
-		printf("Erro na abertura do arquvio DistribuiEspaPrim.txt\n");
-		exit(1);
-	}
+	//localidade e referencia
+	Pilha *pilha = PilhaNova(numVertice);
+	int distancia[numVertice];
+	int quantidadeAcesso[numVertice];
+	IniciaVetorComZero(distancia, numVertice);
+	IniciaVetorComZero(quantidadeAcesso, numVertice);
+	int tamanhoPilha = 0;
+
+
 	int verticeAntecessor[numVertice + 1];
 	short arrayBooleano[numVertice + 1]; //Simula um vetor de booleanos com 0=falso e 1=verdadeiro
 	int heap[numVertice];
@@ -165,9 +168,11 @@ void Prim(int **matriz, int numVertice, int numAresta)
 		if (!ListaAdjacenciaVazia(&u, matriz, numVertice))
 		{
 			proximoVertice = PrimeiroListaAdjacente(&u, matriz, numVertice);
+
 			finalListaAdj = FALSO;
 			while (!finalListaAdj)
 			{
+				if(proximoVertice < numVertice) PilhaEmpilha(pilha, &tamanhoPilha, proximoVertice, distancia, quantidadeAcesso);
 				ProxAdjacente(&u, matriz, numVertice, &v, &peso, &proximoVertice, &finalListaAdj);
 				if (arrayBooleano[v] && peso < pesoAresta[v])
 				{
@@ -177,5 +182,6 @@ void Prim(int **matriz, int numVertice, int numAresta)
 			}
 		}
 	}
+	GeraDistribuicaoEspacial("DistriEspaPrim", teste, distancia, quantidadeAcesso, numVertice);
 	printf("\n");
 }

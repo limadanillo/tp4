@@ -17,7 +17,7 @@
  * Parâmetro 3 = Número de arestas do grafo
  * Imprime na saída padrao a árvore geradora mínima do grafo passado no primeiro parâmetro
  */
-void Prim(int **matriz, int numVertice, int numAresta);
+void Prim(int **matriz, int numVertice, int numAresta, int teste);
 
 /*
  * Procedimento que diminui chave do indice do heap.

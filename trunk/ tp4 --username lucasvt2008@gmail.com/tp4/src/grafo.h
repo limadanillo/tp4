@@ -88,6 +88,15 @@ void LiberaGrafo(ListaGrafo *lista);
  */
 int **LiberaMatrizDeAdjacencia(int **matriz, int tamanho);
 
+/*
+ * Imprime no arquivo a distância média de acessos dos vértices do grafo
+ * Parâmetro 1: Vetor de caracteres que contem o nome do arquivo de saída
+ * Parâmetro 2: Vetor de caracteres que contem o numero do teste
+ * Parâmetro 3: vetor de distancia total dos vértices
+ * Parâmetro 4: vetor de quantidades de acessos do vértice
+ * Parâmetro 5: Tamanho dos vetores.
+ */
+void GeraDistribuicaoEspacial(char *nomeDoArquivo, int teste, int distancia[], int quantidadeAcesso[], int tamanho);
 
 
 void ImprimirEntradas(ListaGrafo *lista);

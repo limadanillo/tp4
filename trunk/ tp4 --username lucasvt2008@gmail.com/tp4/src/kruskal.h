@@ -9,7 +9,7 @@
  * Parâmetro 3 = Número de arestas do grafo
  * Imprime na saída padrao a árvore geradora mínima do grafo passado no primeiro parâmetro
  */
-void Kruskal(int **matriz,int numVertices, int numArestas);
+void Kruskal(int **matriz,int numVertices, int numArestas, int teste);
 
 /*
  * Procedimento que cria um vetor com os vértices do grafo.
@@ -41,8 +41,13 @@ int ProcuraPosicaoVertice (int U[], int i);
  */
 void Reordena(int U[], int p, int q);
 
-
+/*
+ * Imprime Árvore Geradora mínima
+ * Parâmetro 1 = Arvore geradora mínima. Matriz de n linhas e 3 colunas onde n <= número de vértices
+ * Parâmetro 2 = Numero de vertices
+ */
 void ImprimeArvoreGeradoraMinima(int ArvoreMinima[][COL_GRAFO], int numVertices);
+
 
 
 
