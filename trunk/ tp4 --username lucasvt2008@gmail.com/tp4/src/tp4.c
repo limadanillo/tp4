@@ -6,9 +6,8 @@ int main(int argc,char *argv[])
 {
 	ListaGrafo lista;
 	InicializaGrafo(&lista);
-	LeEntrada(&lista);
-	GeraSaidaPadrao(&lista, 1);
-	//ImprimirEntradas(&lista);
+	LeEntrada(&lista, 2);
+	GeraSaidaPadrao(&lista, 2);
 	LiberaGrafo(&lista);
 	printf("FIM\n");
 	return 0;
