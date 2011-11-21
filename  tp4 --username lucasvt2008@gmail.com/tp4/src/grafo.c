@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include "grafo.h"
 #include "kruskal.h"
 #include "prim.h"
@@ -16,7 +17,7 @@ void InicializaGrafo(ListaGrafo *lista)
 
 }
 
-void LeEntrada(ListaGrafo *lista)
+void LeEntrada(ListaGrafo *lista, int algoritmo)
 {
 	int numArestas, numVertices;
 
@@ -34,7 +35,7 @@ void LeEntrada(ListaGrafo *lista)
 	}
 	else
 	{
-		InsereGrafo(lista, numArestas, numVertices);
+		InsereGrafo(lista, numArestas, numVertices, algoritmo);
 		while(numArestas != 0)
 		{
 			scanf("%d %d %d", &origem, &destino, &peso);
@@ -47,13 +48,13 @@ void LeEntrada(ListaGrafo *lista)
 				{
 					break;
 				}
-				InsereGrafo(lista, numArestas, numVertices);
+				InsereGrafo(lista, numArestas, numVertices, algoritmo);
 			}
 		}
 	}
 }
 
-int **CriaMatrizDeAdjacencia(int tamanho)
+int **CriaMatrizDeAdjacencia(int tamanho, int algoritmo)
 {
 	int **matriz;
 	int i, j;
@@ -88,21 +89,22 @@ int **CriaMatrizDeAdjacencia(int tamanho)
 	{
 		for(j=0; j<tamanho; j++)
 		{
-			matriz[i][j] = 0;
+			if(algoritmo == 1) matriz[i][j] = 0;
+			else if (algoritmo == 2) matriz[i][j] = INT_MAX;
 		}
 	}
 
 	return matriz;
 }
 
-void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices)
+void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices, int algoritmo)
 {
 	Apontador aux = lista->ultimo;
 	aux->proximo = (Apontador)malloc(sizeof(Grafo));
 	aux = aux->proximo;
 	aux->numArestas = numArestas;
 	aux->numVertices = numVertices;
-	aux->matrizAdjacencia = CriaMatrizDeAdjacencia(numVertices);
+	aux->matrizAdjacencia = CriaMatrizDeAdjacencia(numVertices, algoritmo);
 	aux->proximo = NULL;
 	lista->ultimo = aux;
 }
@@ -145,9 +147,13 @@ void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo)
 	while(aux != NULL)
 	{
 		printf("Teste %d\n", cont);
-		//Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, cont);
-		Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, cont);
-		//ImprimirMatriz(aux->matrizAdjacencia, aux->numVertices);
+		if(algoritmo == 1) Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, cont);
+		else if(algoritmo == 2) Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, cont);
+		else
+		{
+			printf("Erro no parametro para escolha do algoritmo\n");
+			exit(1);
+		}
 		aux = aux->proximo;
 		cont++;
 	}

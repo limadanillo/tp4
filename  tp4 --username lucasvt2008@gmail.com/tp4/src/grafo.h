@@ -34,20 +34,20 @@ void InicializaGrafo(ListaGrafo *lista);
  * Procedimento para captar da entrada padrão o(s) grafo(s) com seus respectivos
  * vértices, arestas e peso. Possui um parâmetro, do tipo ListaGrafo
  */
-void LeEntrada(ListaGrafo *lista);
+void LeEntrada(ListaGrafo *lista, int algoritmo);
 
 /*
  * Função que retorna uma matriz de adjacencia, preenchidas em todas posições aij
  * com o valor 0. Recebe como parâmetro um tamanho, já que esta matriz é quadrada.
  * Este tamanho nada mais é do que o número de vértices.
  */
-int **CriaMatrizDeAdjacencia(int tamanho);
+int **CriaMatrizDeAdjacencia(int tamanho, int algoritmo);
 /*
  * Procedimento para inserir uma estrutura do tipo grafo
  * na lista passada no primeiro parâmetro. O segundo e o terceiro
  * parâmetro são as quantidade de arestas e vértices respectivamente
  */
-void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices);
+void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices, int algoritmo);
 
 /*
  * Procedimento que Insere uma aresta com seus respectivos vértices, com um determinado peso
