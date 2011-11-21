@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "grafo.h"
 #include "kruskal.h"
 #include "prim.h"
@@ -144,8 +145,8 @@ void GeraSaidaPadrao(ListaGrafo *lista, int algoritmo)
 	while(aux != NULL)
 	{
 		printf("Teste %d\n", cont);
-		//Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
-		Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas);
+		//Kruskal(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, cont);
+		Prim(aux->matrizAdjacencia, aux->numVertices, aux->numArestas, cont);
 		//ImprimirMatriz(aux->matrizAdjacencia, aux->numVertices);
 		aux = aux->proximo;
 		cont++;
@@ -178,6 +179,30 @@ int **LiberaMatrizDeAdjacencia(int **matriz, int tamanho)
 	  }
 	  free (matriz);
 	  return (NULL);
+}
+
+void GeraDistribuicaoEspacial(char *nomeDoArquivo, int teste, int distancia[], int quantidadeAcesso[], int tamanho)
+{
+	char numero[2];
+	char saida[30];
+	strcpy(saida, nomeDoArquivo);
+	sprintf(numero, "%d", teste);
+	strcat(saida, numero);
+	FILE *arq = fopen(saida, "w");
+	if(arq == NULL)
+	{
+		printf("Erro na abertura do arquvio DistribuiEspaKruskal.txt\n");
+		exit(1);
+	}
+	int i;
+	float media;
+	for(i=0; i<tamanho; i++)
+	{
+		if((distancia[i] != 0) && (quantidadeAcesso[i] != 0)) media = (distancia[i] / quantidadeAcesso[i]);
+		else media = 0;
+		fprintf(arq,"%.2f\n", media);
+	}
+	fclose(arq);
 }
 
 void ImprimirEntradas(ListaGrafo *lista)

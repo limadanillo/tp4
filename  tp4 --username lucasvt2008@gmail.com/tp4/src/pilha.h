@@ -3,13 +3,13 @@
 
 typedef int Pilha;
 
-void IniciaVetorDistancia(int vetor[], int tamanho);
+void IniciaVetorComZero(int vetor[], int tamanho);
 Pilha *PilhaNova(int tamanho);
 int PilhaVazia(Pilha *p, int tamanho);
-void PilhaEmpilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[]);
+void PilhaEmpilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[], int quantidadeDeAcessos[]);
 void PilhaDesempilha(Pilha *p, int *tamanhoPilha, int elemento);
 int PesquisaElementoNaPilha(Pilha *p, int elemento);
-void CalculaDistanciaPilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[]);
+void CalculaDistanciaPilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[], int quantidadeDeAcessos[]);
 void PilhaDestroi(Pilha *p);
 
 

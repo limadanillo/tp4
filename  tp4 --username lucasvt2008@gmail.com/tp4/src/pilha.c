@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "pilha.h"
 
-void IniciaVetorDistancia(int vetor[], int tamanho)
+void IniciaVetorComZero(int vetor[], int tamanho)
 {
 	int i;
 	for(i=0; i<tamanho; i++) vetor[i] = 0;
@@ -29,11 +29,11 @@ int PilhaVazia(Pilha *p, int tamanho)
 	return 1;
 }
 
-void PilhaEmpilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[])
+void PilhaEmpilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[], int quantidadeDeAcessos[])
 {
 	if(PesquisaElementoNaPilha(p, elemento))
 	{
-		CalculaDistanciaPilha(p, tamanhoPilha, elemento, distancia);
+		CalculaDistanciaPilha(p, tamanhoPilha, elemento, distancia, quantidadeDeAcessos);
 		PilhaDesempilha(p, tamanhoPilha, elemento);
 	}
 	(*tamanhoPilha)++;
@@ -59,9 +59,10 @@ int PesquisaElementoNaPilha(Pilha *p, int elemento)
 	else return 0;
 }
 
-void CalculaDistanciaPilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[])
+void CalculaDistanciaPilha(Pilha *p, int *tamanhoPilha, int elemento, int distancia[], int quantidadeDeAcessos[])
 {
 	distancia[elemento] = distancia[elemento] + ((*tamanhoPilha) - p[elemento]);
+	quantidadeDeAcessos[elemento]++;
 }
 
 void PilhaDestroi(Pilha *p)

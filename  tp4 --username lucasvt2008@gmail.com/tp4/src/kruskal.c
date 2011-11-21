@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kruskal.h"
+#include "grafo.h"
 #include "pilha.h"
 
 /*
@@ -10,14 +11,17 @@ grafo ponderado. Esta aplicação é projetada especificamente
 para os dados de teste requeridos pelo projeto.
 */
 
-void Kruskal(int **matriz, int numVertices, int numArestas)
+void Kruskal(int **matriz, int numVertices, int numArestas, int teste)
 {
-	FILE *arq = fopen("DistribuiEspaPrim.txt", "w");
-	if(arq == NULL)
-	{
-		printf("Erro na abertura do arquvio DistribuiEspaPrim.txt\n");
-		exit(1);
-	}
+	//localidade e referencia
+	Pilha *pilha = PilhaNova(numVertices);
+	int distancia[numVertices];
+	int quantidadeAcesso[numVertices];
+	IniciaVetorComZero(distancia, numVertices);
+	IniciaVetorComZero(quantidadeAcesso, numVertices);
+	int tamanhoPilha = 0;
+
+
 	int U[numVertices];
 	int ConjuntoArestas[numArestas][3]; // Conjunto de arestas
 	int ArvoreMinima[numVertices-1][3];  // Conjunto de arestas da árvore geradora mínima
@@ -79,6 +83,8 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
    {
 	   a = ConjuntoArestas[proximo_vetice][0];
 	   b = ConjuntoArestas[proximo_vetice][1];
+	   PilhaEmpilha(pilha, &tamanhoPilha, a, distancia, quantidadeAcesso);
+	   PilhaEmpilha(pilha, &tamanhoPilha, b, distancia, quantidadeAcesso);
 
 	   i = ProcuraPosicaoVertice(U, a);
 	   j = ProcuraPosicaoVertice(U, b);
@@ -94,6 +100,8 @@ void Kruskal(int **matriz, int numVertices, int numArestas)
 	   proximo_vetice++;
 	}
    	ImprimeArvoreGeradoraMinima(ArvoreMinima, numVertices);
+   	GeraDistribuicaoEspacial("DistriEspaKruskal", teste, distancia, quantidadeAcesso, numVertices);
+
 }
 
 int ProcuraPosicaoVertice(int U[], int i)
