@@ -15,6 +15,7 @@
  * Parâmetro 1 = Matriz de adjacência representando o grafo
  * Parâmetro 2 = Número de vértices do grafo
  * Parâmetro 3 = Número de arestas do grafo
+ * Parâmetro 4 = Número do teste que corresponde a entrada que está sendo analisada
  * Imprime na saída padrao a árvore geradora mínima do grafo passado no primeiro parâmetro
  */
 void Prim(int **matriz, int numVertice, int numAresta, int teste);
