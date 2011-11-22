@@ -53,7 +53,8 @@ void Kruskal(int **matriz, int numVertices, int numArestas, int teste)
                     min = matriz[i][j];
                     u = i;
                     v = j;
-
+                    PilhaEmpilha(pilha, &tamanhoPilha, i, distancia, quantidadeAcesso);
+                    PilhaEmpilha(pilha, &tamanhoPilha, j, distancia, quantidadeAcesso);
                 }
             }
         }
