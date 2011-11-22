@@ -26,26 +26,36 @@ typedef struct ListaGrafo {
 
 /*
  * Procedimento que inicializa o grafo
- * Possui um parâmetro, do tipo ponteiro para a esturutra ListaGrafo
+ * Parâmetro 1 = Parâmetro tipo ponteiro para a esturutra ListaGrafo
  */
 void InicializaGrafo(ListaGrafo *lista);
 
 /*
  * Procedimento para captar da entrada padrão o(s) grafo(s) com seus respectivos
- * vértices, arestas e peso. Possui um parâmetro, do tipo ListaGrafo
+ * vértices, arestas e peso.
+ * Parâmetro 1 = Parâmetro do tipo ponteiro para a estrutura ListaGrafo
+ * Parâmetro 2 = Representa o algoritmo que será utilizado (e como será preenchida a matriz de adjacencia).
+ * 				 1 Prim / 2  Kruskal
  */
 void LeEntrada(ListaGrafo *lista, int algoritmo);
 
 /*
- * Função que retorna uma matriz de adjacencia, preenchidas em todas posições aij
- * com o valor 0. Recebe como parâmetro um tamanho, já que esta matriz é quadrada.
- * Este tamanho nada mais é do que o número de vértices.
+ * Função que cria uma matriz quadrada de tamanho "tamanho"
+ * Parâmetro 1 = Tamanho da matriz
+ * Parâmetro 2 = Representa o algoritmo que será utilizado (e como será preenchida a matriz de adjacencia).
+ * 				 1 Prim / 2  Kruskal
+ * Retorna ponteiro para matriz.
  */
 int **CriaMatrizDeAdjacencia(int tamanho, int algoritmo);
+
 /*
  * Procedimento para inserir uma estrutura do tipo grafo
- * na lista passada no primeiro parâmetro. O segundo e o terceiro
- * parâmetro são as quantidade de arestas e vértices respectivamente
+ * na lista passada no primeiro parâmetro.
+ * Parâmetro 1: Parâmetro do tipo ponteiro para a estrutura ListaGrafo
+ * Parâmetro 2: Número de Arestas
+ * Parâmetro 3: Número de Vértices
+ * Parâmetro 4: Representa o algoritmo que será utilizado (e como será preenchida a matriz de adjacencia).
+ * 				1 Prim / 2  Kruskal
  */
 void InsereGrafo(ListaGrafo *lista, int numArestas, int numVertices, int algoritmo);
 

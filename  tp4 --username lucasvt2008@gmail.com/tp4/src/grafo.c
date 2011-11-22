@@ -85,6 +85,11 @@ int **CriaMatrizDeAdjacencia(int tamanho, int algoritmo)
 
 	}
 
+	/*
+	 * Laço para preencher a matriz. Caso o algoritmo seja de Kruskal,
+	 * os valores iniciais dos pesos das arestas recebem INT_MAX (biblioteca limits.h).
+	 * Caso seja o algoritmo seja de Prim, o vetor é preenchido com o valor inteiro 0
+	 */
 	for(i=0; i<tamanho; i++)
 	{
 		for(j=0; j<tamanho; j++)
@@ -204,7 +209,7 @@ void GeraDistribuicaoEspacial(char *nomeDoArquivo, int teste, int distancia[], i
 	float media;
 	for(i=0; i<tamanho; i++)
 	{
-		if((distancia[i] != 0) && (quantidadeAcesso[i] != 0)) media = (distancia[i] / quantidadeAcesso[i]);
+		if((distancia[i] > 0) && (quantidadeAcesso[i] != 0)) media = (distancia[i] / quantidadeAcesso[i]);
 		else media = 0;
 		fprintf(arq,"%.2f\n", media);
 	}
